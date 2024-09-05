@@ -1,0 +1,46 @@
+<h1><%= @vendor[:attributes][:name] %></h1>
+
+<p>Contact Name: <%= @vendor[:attributes][:contact_name] %></p>
+<p>Contact Phone: <%= @vendor[:attributes][:contact_phone] %></p>
+<p>Credit Accepted: <%= @vendor[:attributes][:credit_accepted] ? 'Yes' : 'No' %></p>
+<p>Description: <%= @vendor[:attributes][:description] %></p>
+
+<h2>Search for Markets</h2>
+
+<%= form_with url: search_markets_vendor_path(@vendor[:id]), method: :get, local: true do %>
+  <div>
+    <label for="name">Market Name</label>
+    <%= text_field_tag :name, params[:name] %>
+  </div>
+
+  <div>
+    <label for="city">City</label>
+    <%= text_field_tag :city, params[:city] %>
+  </div>
+
+  <div>
+    <label for="state">State</label>
+    <%= text_field_tag :state, params[:state] %>
+  </div>
+
+  <%= submit_tag 'Search', class: 'btn btn-primary' %>
+<% end %>
+
+<!-- Flash message -->
+<% if flash[:alert] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>
+  </div>
+<% elsif flash[:notice] %>
+  <div class="alert alert-success">
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+
+<!-- Display the search results -->
+<h2>Market Results</h2>
+<ul>
+  <% @markets.each do |market| %>
+    <li><%= link_to market[:attributes][:name], market_path(market[:id]) %></li>
+  <% end %>
+</ul>
